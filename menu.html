@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#171612" />
+    <title>Speisekarte | Mộc 83</title>
+    <link rel="icon" type="image/jpeg" href="/M-c-83/assets/logo.jpg" />
+    <style>
+      @font-face{font-family:Manrope;src:url('/M-c-83/assets/manrope-latin-400-normal-PaqtzbVb.woff2')}@font-face{font-family:Cormorant;src:url('/M-c-83/assets/cormorant-garamond-latin-500-normal-BsRWmXhO.woff2')}*{box-sizing:border-box}body{margin:0;background:#171612;color:#f3ecdf;font:15px/1.65 Manrope,Arial,sans-serif}.wrap{width:min(1100px,calc(100% - 40px));margin:auto}header{padding:22px 0;border-bottom:1px solid #524d43;position:sticky;top:0;background:#171612ee;backdrop-filter:blur(12px);z-index:2}.top{display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;font-family:Cormorant,serif;font-size:26px;letter-spacing:.08em}.brand img{width:42px;height:42px}.back{color:#e8b866;text-decoration:none;border-bottom:1px solid #e8b866;padding-bottom:2px}main{padding:58px 0 96px}.eyebrow{color:#e8b866;font-size:11px;letter-spacing:.18em}.title{font:clamp(48px,9vw,100px)/.9 Cormorant,serif;letter-spacing:-.045em;margin:12px 0 22px}.intro{max-width:620px;color:#d4ccbd}.tools{display:grid;grid-template-columns:1fr auto;gap:12px;margin:42px 0 28px}.tools input,.tools select{font:inherit;border:1px solid #5b554b;background:#24221e;color:#f3ecdf;padding:14px 16px;border-radius:2px;outline:none}.tools input:focus,.tools select:focus{border-color:#e8b866}.menu-section{border-top:1px solid #524d43;padding:26px 0}.menu-section h2{font:36px/1 Cormorant,serif;margin:0 0 18px;color:#e8b866}.dish{padding:18px 0;border-top:1px solid #36332e}.dish:first-child{border-top:0}.dish p{margin:3px 0;color:#d4ccbd}.dish p:first-child{font:20px/1.25 Cormorant,serif;color:#f3ecdf;font-weight:bold}.dish p:nth-child(3){font-size:13px;color:#aaa294}.empty{padding:48px 0;color:#d4ccbd}@media(max-width:600px){.wrap{width:min(100% - 28px,1100px)}header{padding:14px 0}.brand{font-size:22px}.tools{grid-template-columns:1fr}.title{font-size:60px}main{padding-top:38px}.menu-section h2{font-size:31px}}
+    </style>
+  </head>
+  <body>
+    <header><div class="wrap top"><a class="brand" href="./"><img src="/M-c-83/assets/logo-small.webp" alt="" />MỘC 83</a><a class="back" href="./">← Zurück zum Restaurant</a></div></header>
+    <main class="wrap"><p class="eyebrow">MỘC 83 · QUEDLINBURG</p><h1 class="title">Unsere<br>Speisekarte.</h1><p class="intro">Alle Gerichte, Getränke und Allergiehinweise. Suchen Sie nach einem Gericht oder wählen Sie eine Kategorie.</p><div class="tools"><input id="search" type="search" placeholder="Gericht suchen …" aria-label="Gericht suchen" /><select id="sections" aria-label="Kategorie auswählen"><option value="">Alle Kategorien</option></select></div><div id="menu" aria-live="polite"></div></main>
+    <script>
+      const root=document.getElementById('menu'),search=document.getElementById('search'),sections=document.getElementById('sections');
+      let menu=[];
+      const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      function render(){const term=search.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');const chosen=sections.value;const results=menu.filter(s=>(!chosen||s.title===chosen)&&(!term||[s.title,...s.lines].join(' ').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').includes(term)));root.innerHTML=results.length?results.map(s=>`<section class="menu-section"><h2>${esc(s.title)}</h2>${s.blocks.map(b=>`<article class="dish">${b.map((line,i)=>`<p class="${i===0?'name':''}">${esc(line)}</p>`).join('')}</article>`).join('')}</section>`).join(''):'<p class="empty">Keine Gerichte gefunden.</p>'}
+      fetch('./src/menu.json').then(r=>r.json()).then(data=>{menu=data;data.forEach(s=>sections.insertAdjacentHTML('beforeend',`<option value="${esc(s.title)}">${esc(s.title)}</option>`));render()}).catch(()=>root.innerHTML='<p class="empty">Die Speisekarte konnte nicht geladen werden.</p>');
+      search.addEventListener('input',render);sections.addEventListener('change',render);
+    </script>
+  </body>
+</html>

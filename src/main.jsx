@@ -35,7 +35,7 @@ function App(){
   useEffect(()=>{ if(modal){dialog.current.showModal();document.body.style.overflow='hidden';}else{dialog.current?.close();document.body.style.overflow='';}return()=>{document.body.style.overflow='';}; },[modal]);
   useEffect(()=>{const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}}),{threshold:.09});document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));return()=>observer.disconnect();},[]);
   const mailHref=`mailto:legiahan0102@gmail.com?subject=${encodeURIComponent(t.emailSubject)}&body=${encodeURIComponent(t.emailBody)}`;
-  const openMenu=()=>{setSearch('');setMenuSection('all');setModal('menu');};
+  const openMenu=()=>{window.location.href='menu.html';};
   const normalize=value=>value.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
   const filtered=fullMenu.filter(s=>menuSection==='all'||s.title===menuSection).map(s=>({...s,blocks:s.blocks.filter(block=>!search||normalize([s.title,...block].join(' ')).includes(normalize(search)))})).filter(s=>s.blocks.length);
   return <>
@@ -43,7 +43,7 @@ function App(){
     <header className="header"><div className="nav-wrap">
       <a href="#" className="brand"><img src="assets/logo-small.webp" alt="" width="58" height="58"/><span>MỘC 83<small>{t.cuisine}</small></span></a>
       <nav className={nav?'nav open':'nav'} aria-label={lang==='de'?'Hauptnavigation':'Main navigation'} id="navigation">
-        {[['restaurant',t.restaurant],['menu',t.menu],['drinks',t.drinks],['contact',t.visit]].map(([id,label])=><a key={id} href={`#${id}`} onClick={()=>setNav(false)}>{label}</a>)}
+        {[['restaurant',t.restaurant],['menu',t.menu],['drinks',t.drinks],['contact',t.visit]].map(([id,label])=><a key={id} href={id==='menu'?'menu.html':`#${id}`} onClick={()=>setNav(false)}>{label}</a>)}
       </nav>
       <div className="nav-actions"><div className="language" aria-label="Language"><button lang="de" aria-pressed={lang==='de'} onClick={()=>setLang('de')}>DE</button><span>/</span><button lang="en" aria-pressed={lang==='en'} onClick={()=>setLang('en')}>EN</button></div><button className="nav-book" onClick={()=>setModal('booking')}>{t.reserve}<ArrowUpRight size={16}/></button><button className="hamburger icon-button" aria-label={nav?t.close:t.mobileNav} aria-expanded={nav} aria-controls="navigation" onClick={()=>setNav(!nav)}>{nav?<X size={24}/>:<List size={24}/>}</button></div>
     </div></header>
