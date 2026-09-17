@@ -6589,8 +6589,7 @@
       "8 verschiedene Nigiri",
       "4 Sake Sashimi",
       "4 Thunfisch Sashimi",
-      "4 Misosuppe",
-      "Drinks"
+      "4 Misosuppe"
     ],
     "blocks": [
       [
@@ -7059,19 +7058,6 @@
           "parts": [
             {
               "text": "4 Misosuppe",
-              "sup": false
-            }
-          ]
-        }
-      ],
-      [
-        {
-          "text": "Drinks",
-          "body": "Drinks",
-          "price": "",
-          "parts": [
-            {
-              "text": "Drinks",
               "sup": false
             }
           ]
@@ -9165,12 +9151,7 @@
       "Pfalz, Qualitätswein, blumig, frisch, angenhem und beömmlich",
       "Müller – Thurgau lieblichL 6,90 21,60",
       "Seine delikat duftenden , fruchtigen Aromen erinnern an saftigen Aprikosen und Pfirische",
-      "WEINSCHORLE weisswein mit Mineralwasser L 0,2L / 6,90",
-      "ROSÉ 0,2L 0,75L",
-      "Spätburgunder Rose –feinherb L 6,90 22,50",
-      "Pfalz, Qualitätswein, frisch, Fruchtbukett nach Himbeeren und reifen Erdbeeren, besonders süffig ohne süß zu sein. .",
-      "Spätburgunde Rose- trockenL 6,90 22,50",
-      "Pfalz, Qualitätswein, frisch, animierend, Fruchtbukett nach Himbeeren und reifen Erdbeeren."
+      "WEINSCHORLE weisswein mit Mineralwasser L 0,2L / 6,90"
     ],
     "blocks": [
       [
@@ -9298,19 +9279,19 @@
               "sup": false
             }
           ]
-        },
-        {
-          "text": "ROSÉ 0,2L 0,75L",
-          "body": "ROSÉ 0,2L 0,75L",
-          "price": "",
-          "parts": [
-            {
-              "text": "ROSÉ 0,2L 0,75L",
-              "sup": false
-            }
-          ]
         }
-      ],
+      ]
+    ]
+  },
+  {
+    "title": "ROSÉ",
+    "lines": [
+      "Spätburgunder Rose –feinherb L 6,90 22,50",
+      "Pfalz, Qualitätswein, frisch, Fruchtbukett nach Himbeeren und reifen Erdbeeren, besonders süffig ohne süß zu sein. .",
+      "Spätburgunde Rose- trockenL 6,90 22,50",
+      "Pfalz, Qualitätswein, frisch, animierend, Fruchtbukett nach Himbeeren und reifen Erdbeeren."
+    ],
+    "blocks": [
       [
         {
           "text": "Spätburgunder Rose –feinherb L 6,90 22,50",

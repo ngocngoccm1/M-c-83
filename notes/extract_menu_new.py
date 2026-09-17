@@ -115,6 +115,15 @@ for paragraph in document.paragraphs:
     if not plain:
         continue
 
+    if plain == "Drinks":
+        current = None
+        continue
+
+    if plain.startswith("ROSÉ "):
+        current = {"title": "ROSÉ", "lines": [], "blocks": []}
+        sections.append(current)
+        continue
+
     if plain in SECTION_TITLES:
         current = {"title": plain, "lines": [], "blocks": []}
         sections.append(current)
