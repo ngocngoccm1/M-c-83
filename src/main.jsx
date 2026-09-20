@@ -17,7 +17,8 @@ import './style.css';
 import { copy, dishes } from './data';
 import fullMenu from './menu.json';
 
-  const phone = 'tel:+4939464159682';
+  // Use the local German dial string for Safari/iPhone compatibility.
+  const phone = 'tel:039464159682';
 const maps = 'https://www.google.com/maps/search/?api=1&query=Moc+83+Steinweg+79+06484+Quedlinburg';
 const facebook = 'https://www.facebook.com/tastyinyourlifr';
 function App(){
