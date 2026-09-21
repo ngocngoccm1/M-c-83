@@ -9353,21 +9353,21 @@
   {
     "title": "ROTWEIN",
     "lines": [
-      "Passo del Sud Appassimento –trocken L 6,90 31,50",
+      "Passo del Sud Appassimento –trocken L 6,90 22,50",
       "dunkelblau-rot Große ausgeprägte Aromen von reifen Brombeeren und Kirschen, Schokolade, Leder, getrocknete Rosinen und Datteln und viele Gewürze.",
       "Dornfelder Rotwein – trockenL 6,90 21,60",
       "Pfalz, Qualitätswein, Frucht und Beerenaromen von Waldbeeren und Wildkirschen, reifen Tannine und weinig Gerbsäure.",
       "Dornfelder Rotwein – lieblichL 6,90 21,60",
       "Pfalz, Qualitätswein, Frucht und Beerenaromen von Waldbeeren und Wildkirschen, reifen Tannine und sehr süffig.",
-      "Berceo Crianza Rioja Doca- trockenL 6,90 31,50",
+      "Berceo Crianza Rioja Doca- trockenL 6,90 22,50",
       "Pfalz, Qualitätswein, trocken, griffig und aromatisch"
     ],
     "blocks": [
       [
         {
-          "text": "Passo del Sud Appassimento –trocken L 6,90 31,50",
+          "text": "Passo del Sud Appassimento –trocken L 6,90 22,50",
           "body": "Passo del Sud Appassimento –trocken L",
-          "price": "6,90 · 31,50",
+          "price": "6,90 · 22,50",
           "parts": [
             {
               "text": "Passo del Sud Appassimento –trocken ",
@@ -9449,9 +9449,9 @@
       ],
       [
         {
-          "text": "Berceo Crianza Rioja Doca- trockenL 6,90 31,50",
+          "text": "Berceo Crianza Rioja Doca- trockenL 6,90 22,50",
           "body": "Berceo Crianza Rioja Doca- trockenL",
-          "price": "6,90 · 31,50",
+          "price": "6,90 · 22,50",
           "parts": [
             {
               "text": "Berceo Crianza Rioja Doca- trocken",
