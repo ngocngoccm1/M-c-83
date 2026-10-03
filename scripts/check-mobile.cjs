@@ -10,7 +10,7 @@ const base=process.argv[2]||'http://127.0.0.1:4173/M-c-83/';
   const results=[];
   for(const [width,height] of [[320,568],[375,812],[390,844],[430,932],[768,1024],[1440,900]]){
     const context=await browser.newContext({viewport:{width,height},deviceScaleFactor:width<768?3:1,isMobile:width<768,hasTouch:width<768});
-    const page=await context.newPage();const errors=[];page.on('response',r=>{if(r.status()>=400&&new URL(r.url()).origin===new URL(base).origin)errors.push(`${r.status()}: ${r.url()}`)});page.on('pageerror',e=>errors.push(e.message));
+    const page=await context.newPage();page.setDefaultTimeout(15000);const errors=[];page.on('response',r=>{if(r.status()>=400&&new URL(r.url()).origin===new URL(base).origin)errors.push(`${r.status()}: ${r.url()}`)});page.on('pageerror',e=>errors.push(e.message));
     const response=await page.goto(base);assert.equal(response.status(),200);
     await page.locator('#hero-title').waitFor();await page.waitForFunction(()=>document.documentElement.dataset.enhanced==='true');await page.evaluate(()=>document.fonts.ready);
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`Horizontal overflow at ${width}`);
@@ -36,6 +36,7 @@ const base=process.argv[2]||'http://127.0.0.1:4173/M-c-83/';
     }else assert.equal(await page.locator('.mobile-bar').isVisible(),false);
     await page.getByRole('tab',{name:'Vorspeisen',exact:true}).click();
     await page.waitForFunction(()=>document.querySelector('.menu-photo img').getAttribute('src').includes('vorspeisen-1280'));
+    await page.locator('.menu-photo img').scrollIntoViewIfNeeded();
     await page.locator('.menu-photo img').evaluate(el=>el.decode());
     assert.match(await page.locator('.menu-photo img').getAttribute('src'),/vorspeisen-1280.webp/);
     await page.screenshot({animations:'disabled',path:`notes/mobile-qa/${engine}-vorspeisen-${width}.png`});
