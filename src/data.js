@@ -2,7 +2,7 @@ export const copy = {
   de: {
     cuisine:'Vietnamesische Küche & Sushi Bar', restaurant:'Unser Restaurant', menu:'Speisekarte', drinks:'Getränke', visit:'Kontakt', reserve:'Tisch reservieren',
     eyebrow:'EIN STÜCK VIETNAM IN QUEDLINBURG', hero:'Fernöstlich.\nHerzlich. Mộc.', heroText:'Vietnamesische Lieblingsgerichte und feines Sushi. Frisch zubereitet, mit Liebe serviert. Willkommen bei Mộc 83.', explore:'Speisekarte entdecken',
-    address:'Hier finden Sie uns', hours:'Unsere Öffnungszeiten', lunch:'Mittags', evening:'Abends', welcome:'XIN CHÀO. WILLKOMMEN BEI MỘC 83.', storyTitle:'Ehrliche Küche.\nEin gutes Gefühl.',
+    address:'Hier finden Sie uns', hours:'Unsere Öffnungszeiten', weekdays:'Montag–Freitag', weekend:'Samstag & Sonntag', weekdaysShort:'Mo–Fr', weekendShort:'Sa & So', welcome:'XIN CHÀO. WILLKOMMEN BEI MỘC 83.', storyTitle:'Ehrliche Küche.\nEin gutes Gefühl.',
     story:'Mitten in Quedlinburg bringen wir die Aromen Vietnams auf Ihren Tisch. Unser Name Mộc steht für das Schlichte und Natürliche. Genau das lieben wir auch an unserer Küche.', story2:'Duftende Kräuter, frische Zutaten und vertraute Rezepte treffen auf feines Sushi. Für ein entspanntes Mittagessen oder einen Abend, der ein bisschen länger bleiben darf.',
     fresh:'Frisch zubereitet', freshText:'Gute Zutaten, voller Geschmack.', veggie:'Auch vegetarisch & vegan', veggieText:'Sprechen Sie uns gerne an.', storyLink:'Wir freuen uns auf Ihren Besuch',
     menuEye:'GUTER GESCHMACK BEGINNT HIER', menuTitle:'Worauf haben Sie Appetit?', menuText:'Von der ersten Sommerrolle bis zum letzten Stück Sushi. Entdecken Sie eine Auswahl aus unserer Küche.',
@@ -16,7 +16,7 @@ export const copy = {
   en: {
     cuisine:'Vietnamese Kitchen & Sushi Bar', restaurant:'Our restaurant', menu:'Menu', drinks:'Drinks', visit:'Contact', reserve:'Book a table',
     eyebrow:'A TASTE OF VIETNAM IN QUEDLINBURG', hero:'Far Eastern.\nFull of heart.', heroText:'Vietnamese favourites and beautifully made sushi. Freshly prepared, served with love. Welcome to Mộc 83.', explore:'Explore the menu',
-    address:'Find us here', hours:'Opening hours', lunch:'Lunch', evening:'Dinner', welcome:'XIN CHÀO. WELCOME TO MỘC 83.', storyTitle:'Honest food.\nA feeling of home.',
+    address:'Find us here', hours:'Opening hours', weekdays:'Monday–Friday', weekend:'Saturday & Sunday', weekdaysShort:'Mon–Fri', weekendShort:'Sat & Sun', welcome:'XIN CHÀO. WELCOME TO MỘC 83.', storyTitle:'Honest food.\nA feeling of home.',
     story:'In the heart of Quedlinburg, we bring the flavours of Vietnam to your table. Our name Mộc reflects simplicity and a love of all things natural. It is how we like to cook, too.', story2:'Fragrant herbs, fresh ingredients and familiar recipes meet carefully made sushi. Join us for a relaxed lunch or settle in for a leisurely evening.',
     fresh:'Freshly prepared', freshText:'Good ingredients, full of flavour.', veggie:'Vegetarian & vegan options', veggieText:'Our team is happy to help.', storyLink:'We look forward to welcoming you',
     menuEye:'GOOD TASTE STARTS HERE', menuTitle:'What are you craving?', menuText:'From the first summer roll to the last piece of sushi. Discover a selection from our kitchen.',

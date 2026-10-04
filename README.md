@@ -38,7 +38,7 @@ Build tĩnh: `npm run build`. Xem build: `npm run preview`. Nội dung xuất b�
 
 Nút đặt bàn mở lựa chọn gọi `03946 4159682` hoặc soạn email đến `legiahan0102@gmail.com`. Email được mở trong ứng dụng thư của khách; website không tự gửi email và không tự xác nhận đặt bàn. Liên kết chỉ đường mở Google Maps, Facebook mở đúng trang được cung cấp.
 
-Tài liệu chỉ cung cấp hai khung giờ 11:00-15:00 và 17:00-22:00, không nêu ngày nghỉ. Website không tự bổ sung lịch các ngày trong tuần.
+Giờ mở cửa: thứ 2–thứ 6 từ 11:00–15:00 và 17:00–22:00; thứ 7 và Chủ nhật mở liên tục từ 11:00–22:00. Lịch này được hiển thị đồng bộ ở thanh thông tin, phần liên hệ và hộp thoại đặt bàn, bằng tiếng Đức và tiếng Anh.
 
 Website xuất bản trên [GitHub Pages](https://ngocngoccm1.github.io/M-c-83/). Thông tin pháp nhân cho Impressum/Datenschutz chưa được cung cấp nên không tạo nội dung pháp lý giả.
 

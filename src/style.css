@@ -47,3 +47,7 @@
 .sushi-gallery,.drinks,.moment,.contact,.footer{content-visibility:auto;contain-intrinsic-size:auto 700px}
 
 html:not([data-enhanced]) .reveal{opacity:1;transform:none}
+
+/* Keep the day groups and uninterrupted weekend hours readable on small screens. */
+.opening-hours{display:grid;gap:8px;font-size:12px;line-height:1.8}.opening-hours .hours-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:4px 20px;max-width:none}.hours-times>span{display:block;white-space:nowrap}.info-strip svg{flex-shrink:0}.booking-hours{align-items:flex-start}.booking-hours>svg{flex-shrink:0;margin-top:2px}.booking-hours .opening-hours{flex:1;min-width:0;color:inherit}
+@media(max-width:767px){.contact-details .opening-hours{font-size:13px}.booking-hours .opening-hours{font-size:11px}.opening-hours .hours-row{column-gap:12px}}
