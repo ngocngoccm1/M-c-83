@@ -1,5 +1,6 @@
 import './fonts.css';
 import './style.css';
+import { handleMapClick } from './map-consent.js';
 
 // React is used to author/build the HTML; visitors only download this small enhancer.
 if (import.meta.env.DEV && !document.getElementById('root').hasChildNodes()) {
@@ -51,6 +52,7 @@ if (import.meta.env.DEV && !document.getElementById('root').hasChildNodes()) {
     if (request !== panelRequest) return;
     category = next;
     root.querySelector('#dish-panel').outerHTML = panels[lang][category];
+    if(lang==='en') root.querySelectorAll('a[href="menu.html"]').forEach(a=>a.href='menu.html?lang=en');
     root.querySelectorAll('[role="tab"]').forEach((tab, index) => {
       tab.setAttribute('aria-selected', String(index === category));
       tab.tabIndex = index === category ? 0 : -1;
@@ -67,9 +69,10 @@ if (import.meta.env.DEV && !document.getElementById('root').hasChildNodes()) {
     lang = next;
     root.innerHTML = markup;
     document.documentElement.lang = lang;
-    document.title = lang === 'de' ? 'Mộc 83 | Vietnamesische Küche & Sushi in Quedlinburg' : 'Mộc 83 | Vietnamese Kitchen & Sushi in Quedlinburg';
+    document.title = lang === 'de' ? 'Mộc 83 (Moc 83) | Vietnamesische Küche & Sushi in Quedlinburg' : 'Mộc 83 (Moc 83) | Vietnamese Kitchen & Sushi in Quedlinburg';
     document.querySelector('meta[name="description"]').content = lang === 'de' ? 'Vietnamesische Küche und Sushi bei Mộc 83, Steinweg 79, Quedlinburg. Tisch reservieren: 03946 4159682.' : 'Vietnamese food and sushi at Mộc 83, Steinweg 79, Quedlinburg. Book a table: 03946 4159682.';
     prepare();
+    if(lang==='en') root.querySelectorAll('a[href="menu.html"]').forEach(a=>a.href='menu.html?lang=en');
     await setCategory(category);
     root.querySelector(`.language button[lang="${lang}"]`).focus({preventScroll: true});
     window.scrollTo({top: scrollPosition, behavior: 'instant'});
@@ -78,6 +81,7 @@ if (import.meta.env.DEV && !document.getElementById('root').hasChildNodes()) {
     const target = event.target.closest('a,button');
     if (!target) { if (event.target === dialog()) closeBooking(); return; }
     try {
+      if (handleMapClick(target)) return;
       if (target.matches('.language button')) { await setLanguage(target.lang); return; }
       if (target.matches('.hamburger')) { setNavigation(target.getAttribute('aria-expanded') !== 'true'); return; }
       if (target.matches('.nav a')) { setNavigation(false); return; }
@@ -108,5 +112,6 @@ if (import.meta.env.DEV && !document.getElementById('root').hasChildNodes()) {
     root.querySelector(`#tab-${next}`).focus();
   });
   prepare();
+  if (new URLSearchParams(window.location.search).get('lang') === 'en') await setLanguage('en');
   if (new URLSearchParams(window.location.search).get('booking') === '1') openBooking();
 }

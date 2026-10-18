@@ -14,8 +14,28 @@ const base=process.argv[2]||'http://127.0.0.1:4173/M-c-83/';
     const response=await page.goto(base);assert.equal(response.status(),200);
     await page.locator('#hero-title').waitFor();await page.waitForFunction(()=>document.documentElement.dataset.enhanced==='true');await page.evaluate(()=>document.fonts.ready);
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`Horizontal overflow at ${width}`);
+    assert.equal(await page.locator('meta[property="og:title"]').count(),1);
+    assert.match(await page.locator('meta[property="og:image"]').getAttribute('content'),/^https:\/\/.+moc83-sushi-social\.jpg$/);
+    const schema=JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
+    assert.equal(schema['@type'],'Restaurant');assert.equal(schema.alternateName,'Moc 83');
+    assert.deepEqual(schema.openingHoursSpecification.map(({dayOfWeek,opens,closes})=>({dayOfWeek,opens,closes})),[
+      {dayOfWeek:['Monday','Tuesday','Wednesday','Thursday','Friday'],opens:'11:00',closes:'21:00'},
+      {dayOfWeek:['Saturday','Sunday'],opens:'11:00',closes:'22:00'}
+    ]);
+    for(const hours of await page.locator('.opening-hours').all()){
+      assert.deepEqual(await hours.locator('.hours-times').allTextContents(),['11:00 - 21:00','11:00 - 22:00']);
+    }
+    assert.equal(await page.locator('iframe').count(),0,'Maps must remain blocked before consent');
+    assert.equal(await page.evaluate(()=>document.cookie),'');
+    assert.doesNotMatch(await page.locator('body').innerText(),/Thank you|Invalid Code/);
     if(width<768){
       const actions=page.locator('.mobile-bar');assert.equal(await actions.isVisible(),true);
+      const barBox=await actions.boundingBox();
+      const hours=await page.locator('.hero-hours').boundingBox();
+      assert.ok(hours.y>=0&&hours.y+hours.height<=barBox.y,'Hours must fit above mobile bar on first screen');
+      const hero=await page.locator('.hero-image').boundingBox();
+      assert.ok(Math.min(hero.y+hero.height,barBox.y)-hero.y>=100,'Sushi photo must be visible on first screen');
+      await page.locator('.hero-image img').evaluate(el=>el.decode());
       assert.equal(await actions.locator('a,button').count(),3);
       assert.equal(await actions.locator('a').first().getAttribute('href'),'tel:039464159682');
       assert.match(await actions.locator('a').nth(1).getAttribute('href'),/google.com\/maps/);
@@ -32,6 +52,8 @@ const base=process.argv[2]||'http://127.0.0.1:4173/M-c-83/';
       await page.getByRole('button',{name:'EN',exact:true}).click();
       await actions.getByRole('link',{name:'Get directions',exact:true}).waitFor();
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+      const englishHours=await page.locator('.hero-hours').boundingBox();
+      assert.ok(englishHours.y+englishHours.height<=(await actions.boundingBox()).y);
       await page.getByRole('button',{name:'DE',exact:true}).click();await page.waitForFunction(()=>document.documentElement.lang==='de');
     }else assert.equal(await page.locator('.mobile-bar').isVisible(),false);
     await page.getByRole('tab',{name:'Vorspeisen',exact:true}).click();
@@ -44,20 +66,49 @@ const base=process.argv[2]||'http://127.0.0.1:4173/M-c-83/';
     await page.waitForFunction(()=>document.getElementById('tab-3').getAttribute('aria-selected')==='true');
     await page.getByRole('tab',{name:'Getränke & Desserts',exact:true}).press('Home');
     await page.waitForFunction(()=>document.getElementById('tab-0').getAttribute('aria-selected')==='true');
+    if(width===390){
+      await page.route('https://www.google.com/maps?**',route=>route.fulfill({contentType:'text/html',body:'<p>Map test frame</p>'}));
+      await page.locator('.map-load').click();await page.locator('.map-frame iframe').waitFor();
+      assert.equal(await page.locator('.map-placeholder').isVisible(),false);
+      await page.locator('.map-remove').click();assert.equal(await page.locator('iframe').count(),0);
+      assert.equal(await page.locator('.map-placeholder').isVisible(),true);
+    }
     const theme=page.locator('.theme-toggle');await theme.click();assert.equal(await page.locator('html').getAttribute('data-theme'),'light');
     await theme.click();assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
     await page.goto(new URL('menu.html',base).href);await page.locator('#menu .menu-section').first().waitFor();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`Menu overflow at ${width}`);
     await page.locator('#search').fill('Dornfelder');assert.ok((await page.locator('#menu').textContent()).includes('22,50'));
+    assert.equal(await page.locator('#no-results').isVisible(),false);
+    await page.locator('#search').fill('zzzzzz');assert.equal(await page.locator('#no-results').isVisible(),true);
+    await page.locator('#search').fill('');
+    await page.locator('#sections').selectOption('9');
+    assert.equal(await page.locator('#menu .menu-section:visible').count(),1);
+    await page.locator('#sections').selectOption('');
+    await page.locator('#search').evaluate(el=>el.scrollIntoView({block:'start',behavior:'instant'}));
+    assert.equal(await page.locator('#search').evaluate(el=>{const r=el.getBoundingClientRect();return el===document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)}),true,'Menu filter must remain clickable');
+    await page.getByRole('button',{name:'EN',exact:true}).click();assert.equal(await page.locator('html').getAttribute('lang'),'en');
+    await page.getByRole('button',{name:'DE',exact:true}).click();
+    assert.equal(await page.locator('#allergene dt').count(),14);
     if(width<768){
       assert.equal(await page.locator('.quick-contact a').count(),3);
       await page.screenshot({animations:'disabled',path:`notes/mobile-qa/${engine}-menu-${width}.png`});
       await page.locator('.quick-contact a').last().click();await page.locator('dialog[open]').waitFor();
     }
+    for(const legal of ['impressum.html','datenschutz.html']){
+      await page.goto(new URL(legal,base).href);
+      assert.equal(await page.locator('h1').isVisible(),true);
+      assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`Legal page overflow: ${legal} at ${width}`);
+    }
     assert.deepEqual(errors,[]);results.push({width,passed:true});await context.close();
   }
   const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:390,height:844}});
   const page=await context.newPage();await page.goto(base);assert.equal(await page.locator('#hero-title').isVisible(),true);assert.equal(await page.locator('.mobile-bar a').count(),3);
-  await page.screenshot({animations:'disabled',path:`notes/mobile-qa/${engine}-no-js.png`});await context.close();
+  await page.screenshot({animations:'disabled',path:`notes/mobile-qa/${engine}-no-js.png`});
+  await page.goto(new URL('menu.html',base).href);
+  assert.equal(await page.locator('#menu .menu-section').count(),30);
+  assert.ok(await page.locator('#menu .menu-price').count()>100);
+  assert.equal(await page.locator('#allergene dt').count(),14);
+  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+  await context.close();
   await browser.close();console.log(JSON.stringify({engine,results,staticHtmlWithoutJavaScript:true},null,2));
 })().catch(e=>{console.error(e);process.exit(1);});
