@@ -14,6 +14,10 @@ const base=process.argv[2]||'http://127.0.0.1:4173/M-c-83/';
     const response=await page.goto(base);assert.equal(response.status(),200);
     await page.locator('#hero-title').waitFor();await page.waitForFunction(()=>document.documentElement.dataset.enhanced==='true');await page.evaluate(()=>document.fonts.ready);
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`Horizontal overflow at ${width}`);
+    assert.equal(await page.evaluate(()=>document.querySelector('#menu').compareDocumentPosition(document.querySelector('#restaurant')) & Node.DOCUMENT_POSITION_FOLLOWING),4,'Menu must come before the restaurant story');
+    for(const selector of ['.hero-description','.dish p','.story-copy>p:not(.eyebrow)']) {
+      assert.ok(await page.locator(selector).first().evaluate(el=>parseFloat(getComputedStyle(el).fontSize)>=18),`Readable body text: ${selector} at ${width}`);
+    }
     assert.equal(await page.locator('meta[property="og:title"]').count(),1);
     assert.match(await page.locator('meta[property="og:image"]').getAttribute('content'),/^https:\/\/.+moc83-sushi-social\.jpg$/);
     const schema=JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());
@@ -33,8 +37,11 @@ const base=process.argv[2]||'http://127.0.0.1:4173/M-c-83/';
       const barBox=await actions.boundingBox();
       const hours=await page.locator('.hero-hours').boundingBox();
       assert.ok(hours.y>=0&&hours.y+hours.height<=barBox.y,'Hours must fit above mobile bar on first screen');
-      const hero=await page.locator('.hero-image').boundingBox();
-      assert.ok(Math.min(hero.y+hero.height,barBox.y)-hero.y>=100,'Sushi photo must be visible on first screen');
+      const shortcut=page.locator('.menu-shortcut');
+      const shortcutBox=await shortcut.boundingBox();
+      assert.ok(shortcutBox.y>=0&&shortcutBox.y+shortcutBox.height<barBox.y,'Menu shortcut must be on the first screen');
+      assert.ok(shortcutBox.height>=48,'Menu shortcut must be easy to tap');
+      assert.equal(await shortcut.getAttribute('href'),'menu.html');
       await page.locator('.hero-image img').evaluate(el=>el.decode());
       assert.equal(await actions.locator('a,button').count(),3);
       assert.equal(await actions.locator('a').first().getAttribute('href'),'tel:039464159682');
@@ -73,7 +80,18 @@ const base=process.argv[2]||'http://127.0.0.1:4173/M-c-83/';
       await page.locator('.map-remove').click();assert.equal(await page.locator('iframe').count(),0);
       assert.equal(await page.locator('.map-placeholder').isVisible(),true);
     }
+    async function checkContrast(){
+      const ratios=await page.evaluate(()=>{
+        const css=getComputedStyle(document.documentElement);
+        const luminance=value=>{const c=value.trim().replace('#','');const rgb=c.match(/../g).map(v=>parseInt(v,16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return rgb[0]*.2126+rgb[1]*.7152+rgb[2]*.0722;};
+        const contrast=(a,b)=>{const x=luminance(css.getPropertyValue(a)),y=luminance(css.getPropertyValue(b));return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
+        return [contrast('--text','--bg'),contrast('--muted','--surface'),contrast('--gold','--soft')];
+      });
+      assert.ok(ratios[0]>=7&&ratios[1]>=7&&ratios[2]>=4.5,`Text contrast too low: ${ratios}`);
+    }
+    await checkContrast();
     const theme=page.locator('.theme-toggle');await theme.click();assert.equal(await page.locator('html').getAttribute('data-theme'),'light');
+    await checkContrast();
     await theme.click();assert.equal(await page.locator('html').getAttribute('data-theme'),'dark');
     await page.goto(new URL('menu.html',base).href);await page.locator('#menu .menu-section').first().waitFor();
     assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`Menu overflow at ${width}`);

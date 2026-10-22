@@ -53,9 +53,13 @@ Trang GitHub Pages không cài tracking và không tự đặt cookie. Google Ma
 
 Ký hiệu dị ứng được giữ theo menu cung cấp, không tự suy đoán công thức. Nhà hàng cần rà soát các món/biến thể và nước sốt trước khi xác nhận: ví dụ nguồn gốc ghi Udon Xào có F/K/N nhưng không ghi A1, và Sushi Menu 3 có cá nhưng chỉ ghi K. Bảng chú giải đủ 14 nhóm không thay thế việc xác nhận từng món.
 
+## Độ dễ đọc
+
+Chữ nội dung chính 18px, giá món nổi bật 20px; chữ trắng ngà và vàng sáng trên nền tối. Theme sáng dùng chữ nâu đậm. Các danh mục món trên điện thoại chia thành lưới hai cột, nút tối thiểu 56–64px. Trang thực đơn đầy đủ đưa tìm kiếm/lọc lên ngay sau tiêu đề; hộp thoại đặt bàn đưa nút gọi/email lên trước nội dung hướng dẫn.
+
 ## Kiểm tra mobile
 
-Thanh liên hệ cố định gồm Anrufen, Route và Tisch reservieren trên cả trang chủ và thực đơn. Ảnh sushi thật và giờ mở cửa được đưa vào màn hình đầu trên điện thoại. Các liên kết gọi điện và Google Maps dùng URL trực tiếp; đặt bàn mở lựa chọn gọi điện hoặc email.
+Thanh liên hệ cố định gồm Anrufen, Route và Tisch reservieren trên cả trang chủ và thực đơn. Nút Speisekarte luôn hiện ngay dưới logo trên điện thoại; phần thực đơn nằm ngay sau hero và trước phần giới thiệu. Giờ mở cửa hiển thị ngay đầu trang; ảnh sushi thật nằm tiếp theo. Các liên kết gọi điện và Google Maps dùng URL trực tiếp; đặt bàn mở lựa chọn gọi điện hoặc email.
 
 Ảnh có nhiều kích thước, dùng WebP (ảnh đầu trang có thêm AVIF), các ảnh dưới màn hình đầu tải khi cần. Ảnh hero lấy từ ảnh thật được cung cấp; bản AVIF 480px khoảng 15 KB và 640px khoảng 24 KB. Ảnh chia sẻ JPEG 1200×630 tương thích trình đọc OG. Tạo lại bằng `python scripts/prepare-social-image.py` với Pillow. Font có Unicode range riêng cho ký tự Latin và tiếng Việt. Phần gallery, đồ uống và liên hệ dùng content-visibility; mobile bỏ hiệu ứng ẩn nội dung khi cuộn.
 
